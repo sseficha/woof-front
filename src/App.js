@@ -1,25 +1,34 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import FriendForm from './FriendForm';
+import FriendList from './FriendList';
+import SendForm from './SendForm';
+import { Amplify, Auth } from 'aws-amplify';
+import awsconfig from './aws-exports'
+import { withAuthenticator } from '@aws-amplify/ui-react'
+import '@aws-amplify/ui-react/styles.css';
 
-function App() {
+Amplify.configure(awsconfig)
+
+function App({ signOut, user }) {
+  const [friends, setFriends] = useState([])
+
+  useEffect(() => {
+    setFriends([
+      { 'name': 'Josh', 'email': 'josh@josh.com', 'phone': '1234567890' },
+      { 'name': 'Bob', 'email': 'bob@bob.com', 'phone': '1345567890' }
+    ])
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <h1>Hello {user.username}</h1>
+      <button onClick={signOut}>Sign out</button>
+      <FriendForm />
+      <FriendList friends={friends} />
+      <SendForm friends={friends} />
+    </>
   );
 }
 
-export default App;
+export default withAuthenticator(App);
