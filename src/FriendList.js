@@ -1,9 +1,16 @@
 function FriendList(props) {
     return (
         <ul>
-            {props.friends.map((item, index) => <li key={index}>{item.name + item.email + item.phone}</li>)}
+            {props.friendsList.map((item, index) => (
+                <li key={index}>
+                    {item.friend_name +
+                        " " +
+                        item.friend_email +
+                        " " +
+                        item.friend_phone}
+                </li>
+            ))}
         </ul>
-
     );
 }
 
